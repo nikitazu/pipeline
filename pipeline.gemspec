@@ -16,4 +16,6 @@ Gem::Specification.new do |gem|
   gem.version       = Pipeline::VERSION
   
   gem.add_development_dependency 'rspec', "~> 2.6"
+  
+  gem.add_dependency 'rubyzip', "0.9.9"
 end
