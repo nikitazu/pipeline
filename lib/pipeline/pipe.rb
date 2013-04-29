@@ -6,9 +6,9 @@ module Pipeline
     attr_reader :result # :skip :fail :ok
     attr_reader :config
     
-    def initialize(name, config, source_max, target_max)
+    def initialize(name, source_max, target_max)
       @name = name
-      @config = config
+      @config = {}
       @source = PipeEnd.new source_max
       @target = PipeEnd.new target_max
     end
@@ -54,7 +54,7 @@ module Pipeline
     end
     
     def log(message)
-      puts message
+      puts "#{name}: #{message}"
     end
   end
 end
