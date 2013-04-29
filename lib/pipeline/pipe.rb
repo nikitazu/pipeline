@@ -3,7 +3,7 @@ module Pipeline
     attr_reader :name
     attr_reader :source
     attr_reader :target
-    attr_reader :result
+    attr_reader :result # :skip :fail :ok
     attr_reader :config
     
     def initialize(name, config, source_max, target_max)
@@ -11,6 +11,50 @@ module Pipeline
       @config = config
       @source = PipeEnd.new source_max
       @target = PipeEnd.new target_max
+    end
+    
+    def execute
+      log 'execute'
+      log @config
+      
+      log 'check before work...'
+      @result = check_before_work()
+      log @result
+      if @result == :fail
+        return
+      end
+      
+      log 'doing work...'
+      @result = work()
+      log @result
+      if @result == :fail
+        return
+      end
+      
+      log 'check after work...'
+      @result = check_after_work()
+      log @result
+      if @result == :fail
+        return
+      end
+      
+      log 'execute done'
+    end
+    
+    def check_before_work
+      return :skip
+    end
+    
+    def work
+      return :skip
+    end
+    
+    def check_after_work
+      return :skip
+    end
+    
+    def log(message)
+      puts message
     end
   end
 end

@@ -9,4 +9,10 @@ describe Pipeline::Pipe do
     x.source.max.should eql(2)
     x.target.max.should eql(1)
   end
+  
+  it 'pipe execute' do
+    x = Pipeline::Pipe.new 'pipe', { :foo => 'bar' }, 2, 1
+    x.execute
+    x.result.should eql(:skip)
+  end
 end
