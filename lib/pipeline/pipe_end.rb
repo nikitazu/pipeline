@@ -9,7 +9,7 @@ module Pipeline
     end
     
     def add(value)
-      if @items.length == @max
+      if @max > 0 and @items.length == @max
         return false
       end
       

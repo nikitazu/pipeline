@@ -36,4 +36,13 @@ describe Pipeline::PipeEnd do
     x.clear
     x.items.should eql([])
   end
+  
+  it 'pipe end no limit' do
+    x = Pipeline::PipeEnd.new 0
+    x.add('item 1').should eql(true)
+    x.add('item 2').should eql(true)
+    x.add('item 3').should eql(true)
+    x.add('item 4').should eql(true)
+    x.items.should eql(['item 1', 'item 2', 'item 3', 'item 4'])
+  end
 end
