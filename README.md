@@ -75,17 +75,11 @@ require 'pipeline/zip_seven_pipe'
 require 'pipeline/email_pipe'
 
 line = Pipeline::Line.new
-http = Pipeline::HttpPipe.new
-zip7 = Pipeline::ZipSevenPipe.new
-mail = Pipeline::EmailPipe.new
-
-line.add http
-line.add zip7
-line.add mail
+line.add Pipeline::HttpPipe.new, :filename => 'readme.txt'
+line.add Pipeline::ZipSevenPipe.new
+line.add Pipeline::EmailPipe.new, :to => 'nikitazu@gmail.com'
 
 line.source.add "http://sourceforge.net/projects/cloverefiboot/files/readme.txt/download"
-http.config[:filename] = 'readme.txt'
-mail.config[:to] = 'nikitazu@gmail.com'
 line.execute
 ```
 
