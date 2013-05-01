@@ -21,7 +21,7 @@ Or install it yourself as:
 ## Usage
 
 Http example
-
+```ruby
     require 'pipeline/http_pipe'
     
     x = Pipeline::HttpPipe.new
@@ -29,9 +29,9 @@ Http example
     x.config[:filename] = "my-cool-picture.jpg"
     x.config[:path] = "/tmp/downloads"
     x.execute
-
+```
 7-zip example
-
+```ruby
     require 'pipeline/zip_seven_pipe'
 
     x = Pipeline::ZipSevenPipe.new
@@ -39,10 +39,11 @@ Http example
     x.config[:part_size_mb] = "4"
     x.config[:zip_binary] = "/usr/bin/7za"
     x.execute
-
+```
 E-mail example
-
-    todo
+```ruby
+    # todo
+```
 
 ## Contributing
 
