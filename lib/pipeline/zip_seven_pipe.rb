@@ -56,6 +56,8 @@ module Pipeline
           log "error: archive part not found #{part}"
           return :fail
         end
+        
+        @target.add part
       end
       
       return :ok
