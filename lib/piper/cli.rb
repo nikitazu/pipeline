@@ -38,17 +38,11 @@ module Piper
     desc 'line PATH FILENAME TO', 'Downloads file from URI archives it with 7-zip and sends via e-mail to TO'
     def line(path, filename, to)
       line = Pipeline::Line.new
-      http = Pipeline::HttpPipe.new
-      zip7 = Pipeline::ZipSevenPipe.new
-      mail = Pipeline::EmailPipe.new
-
-      line.add http
-      line.add zip7
-      line.add mail
+      line.add Pipeline::HttpPipe.new, { :filename => filename }
+      line.add Pipeline::ZipSevenPipe.new, { }
+      line.add Pipeline::EmailPipe.new, { :to => to }
 
       line.source.add path
-      http.config[:filename] = filename
-      mail.config[:to] = to
       line.execute
     end
   end

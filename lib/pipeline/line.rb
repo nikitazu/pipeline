@@ -6,11 +6,20 @@ module Pipeline
     def initialize
       super('line', 0, 0)
       @pipes = []
+      @pipes_hash = {}
     end
     
-    def add(pipe)
+    def add(pipe, config = {})
       log "adding pipe #{pipe.name} to line"
       @pipes.push pipe
+      @pipes_hash[pipe.name] = pipe
+      config.each do |key, value|
+        pipe.config[key] = value
+      end
+    end
+    
+    def pipe(name)
+      return @pipes_hash[name]
     end
     
     def work
