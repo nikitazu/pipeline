@@ -20,13 +20,13 @@ Or install it yourself as:
 
 ## Usage
 
-require 'pipeline/http_pipe'
-
-x = Pipeline::HttpPipe.new
-x.source.add "http://somesite/some-cool-picture.jpg"
-x.config[:filename] = "my-cool-picture.jpg"
-x.config[:path] = "/tmp/downloads"
-x.execute
+    require 'pipeline/http_pipe'
+    
+    x = Pipeline::HttpPipe.new
+    x.source.add "http://somesite/some-cool-picture.jpg"
+    x.config[:filename] = "my-cool-picture.jpg"
+    x.config[:path] = "/tmp/downloads"
+    x.execute
 
 ## Contributing
 
