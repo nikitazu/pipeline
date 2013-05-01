@@ -2,6 +2,7 @@ require 'thor'
 require 'pipeline/http_pipe'
 require 'pipeline/zip_seven_pipe'
 require 'pipeline/email_pipe'
+require 'pipeline/line'
 
 module Piper
   class CLI < Thor
@@ -32,6 +33,23 @@ module Piper
       x.source.add path
       x.config[:to] = to
       x.execute
+    end
+    
+    desc 'line PATH FILENAME TO', 'Downloads file from URI archives it with 7-zip and sends via e-mail to TO'
+    def line(path, filename, to)
+      line = Pipeline::Line.new
+      http = Pipeline::HttpPipe.new
+      zip7 = Pipeline::ZipSevenPipe.new
+      mail = Pipeline::EmailPipe.new
+
+      line.add http
+      line.add zip7
+      line.add mail
+
+      line.source.add path
+      http.config[:filename] = filename
+      mail.config[:to] = to
+      line.execute
     end
   end
 end
