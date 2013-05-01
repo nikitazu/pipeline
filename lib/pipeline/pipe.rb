@@ -1,3 +1,5 @@
+require 'pipeline/pipe_end'
+
 module Pipeline
   class Pipe
     attr_reader :name

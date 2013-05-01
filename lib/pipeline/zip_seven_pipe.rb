@@ -1,32 +1,55 @@
+require 'pipeline/pipe'
+
 module Pipeline
   class ZipSevenPipe < Pipe
     def initialize
       super('7Z', 1, 0)
+      @config[:part_size_mb] = "4"
+    end
+    
+    def check_before_work
+      @path = @source.items[0]
+      filename = File.basename(@path)
+      archive_to_name = "#{filename}.7z"
+      @archive_to_dir = "#{@path}.7z.d"
+      @archive_to_path = File.join(@archive_to_dir, archive_to_name)
+      
+      make_empty_dir @archive_to_dir
+      
+      @part_size_mb = @config[:part_size_mb].to_i
+      if @part_size_mb <= 0
+        log "error: wrong part size #{@part_size_mb}"
+        return :fail
+      end
+      
+      return :ok
     end
     
     def work
-      work_dir = '/Users/nikitazu/clerk'
-      archive_dir = '/Users/nikitazu/clerk/7z'
-      
       bin = '/opt/local/bin/7za'
-      options = "a -t7z -v4m -y -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on -mhe=on"
+      options = "a -t7z -v#{@part_size_mb}m -y -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on -mhe=on"
+      output = %x[#{bin} #{options} #{@archive_to_path} #{@path} 2>&1]
       
-      file = @source.items[0]
-      archive = "#{file}.7z"
-      
-      a_file = "#{work_dir}/#{file}"
-      a_archive = "#{archive_dir}/#{archive}"
-      
-      make_empty_dir archive_dir
-      output = %x[#{bin} #{options} #{a_archive} #{a_file} 2>&1]
+      log "options: #{options}"
       
       if not $?.success?
         log "error: #{output}"
         return :fail
       end
       
-      parts = Dir["#{archive_dir}/*"]
-      log "volumes created #{parts}"
+      @parts = Dir["#{@archive_to_dir}/*"]
+      log "volumes created #{@parts}"
+    end
+    
+    def check_after_work
+      @parts.each do |part|
+        if not File.exists?(part)
+          log "error: archive part not found #{part}"
+          return :fail
+        end
+      end
+      
+      return :ok
     end
     
     def make_empty_dir(path)

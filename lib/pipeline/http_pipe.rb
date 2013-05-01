@@ -1,17 +1,42 @@
 require 'net/http'
+require 'pipeline/pipe'
 
 module Pipeline
   class HttpPipe < Pipe
     def initialize
       super('HTTP', 1, 1)
+      @config[:path] = '/tmp/hclerk/'
+    end
+    
+    def check_before_work
+      file = @config[:filename]
+      path = @config[:path]
+      
+      @uri = @source.items[0]
+      @save_to = File.join(path, file)
+      
+      if not File.exists?(path)
+        log "creating directory: #{path}"
+        Dir.mkdir path
+      end
+      
+      return :ok
     end
     
     def work
-      uri = @source.items[0]
-      file = @target.items[0]
-      
-      return load(uri, file)
+      return load(@uri, @save_to)
     end
+    
+    def check_after_work
+      if not File.exists?(@save_to)
+        return :fail
+      end
+      
+      @target.add @save_to
+      
+      return :ok
+    end
+    
     
     def load(uri, file)
       log "loading uri #{uri}"
@@ -30,6 +55,7 @@ module Pipeline
         load(redir, file)
         return :ok
       else
+        log "error: #{response.value}"
         return :fail
       end
     end

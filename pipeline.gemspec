@@ -15,7 +15,16 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Pipeline::VERSION
   
+  # unit testing
   gem.add_development_dependency 'rspec', "~> 2.6"
   
+  # testing cli
+  gem.add_development_dependency "cucumber"
+  gem.add_development_dependency "aruba"
+  
+  # zip+split not working correctly
   gem.add_dependency 'rubyzip', "0.9.9"
+  
+  # cli
+  gem.add_dependency 'thor'
 end
