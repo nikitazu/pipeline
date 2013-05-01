@@ -20,6 +20,8 @@ Or install it yourself as:
 
 ## Usage
 
+Http example
+
     require 'pipeline/http_pipe'
     
     x = Pipeline::HttpPipe.new
@@ -27,6 +29,20 @@ Or install it yourself as:
     x.config[:filename] = "my-cool-picture.jpg"
     x.config[:path] = "/tmp/downloads"
     x.execute
+
+7-zip example
+
+    require 'pipeline/zip_seven_pipe'
+
+    x = Pipeline::ZipSevenPipe.new
+    x.source.add "/path/to/my/big/file.avi"
+    x.config[:part_size_mb] = "4"
+    x.config[:zip_binary] = "/usr/bin/7za"
+    x.execute
+
+E-mail example
+
+    todo
 
 ## Contributing
 
