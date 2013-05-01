@@ -17,7 +17,13 @@ module Pipeline
     
     def execute
       log 'execute'
-      log @config
+      @source.items.each do |src|
+        log "source item #{src}"
+      end
+      
+      @config.each do |cfg|
+        log "config item #{cfg}"
+      end
       
       log 'check before work...'
       @result = check_before_work()

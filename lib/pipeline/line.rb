@@ -19,10 +19,7 @@ module Pipeline
         return :skip
       end
       
-      first_pipe = @pipes[0]
-      @source.items.each do |src|
-        first_pipe.source.add src
-      end
+      @source.push_to @pipes[0].source
       
       index = 0
       length = @pipes.length
@@ -44,8 +41,7 @@ module Pipeline
         if index < (length - 1)
           nextpipe = @pipes[index + 1]
           log "connecting ends [#{pipe.name} => #{nextpipe.name}]"
-          
-          pipe.target.items.each { |target| nextpipe.source.add target }
+          pipe.target.push_to nextpipe.source
         end
         
         index += 1

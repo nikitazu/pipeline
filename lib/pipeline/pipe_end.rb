@@ -28,5 +28,9 @@ module Pipeline
     def length
       @items.length
     end
+    
+    def push_to(other_end)
+      @items.each { |item| other_end.add item }
+    end
   end
 end
