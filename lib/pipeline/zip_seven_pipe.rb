@@ -4,7 +4,8 @@ module Pipeline
   class ZipSevenPipe < Pipe
     def initialize
       super('7Z', 1, 0)
-      @config[:part_size_mb] = "4"
+      @config[:part_size_mb] = '4'
+      @config[:zip_binary] = '/opt/local/bin/7za'
     end
     
     def check_before_work
@@ -26,7 +27,7 @@ module Pipeline
     end
     
     def work
-      bin = '/opt/local/bin/7za'
+      bin = @config[:zip_binary]
       options = "a -t7z -v#{@part_size_mb}m -y -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on -mhe=on"
       output = %x[#{bin} #{options} #{@archive_to_path} #{@path} 2>&1]
       
