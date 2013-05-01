@@ -21,10 +21,10 @@ Or install it yourself as:
 
 ## Testing
 
-# unit testing
+    # unit testing
     $ bundle exec rspec spec
     
-# cli testing
+    # cli testing
     $ bundle exec cucumber features
 
 
