@@ -24,5 +24,9 @@ module Pipeline
     def items
       @items.map { |x| x }
     end
+    
+    def length
+      @items.length
+    end
   end
 end

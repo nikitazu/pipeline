@@ -18,6 +18,16 @@ Or install it yourself as:
 
     $ gem install pipeline
 
+
+## Testing
+
+# unit testing
+    $ bundle exec rspec spec
+    
+# cli testing
+    $ bundle exec cucumber features
+
+
 ## Usage
 
 Http example

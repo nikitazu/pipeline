@@ -17,3 +17,7 @@ Feature: Pipe
         And the directory "/tmp/hclerk/air.mp3.7z.d" should exist
         And the file "/tmp/hclerk/air.mp3.7z.d/air.mp3.7z.001" should exist
         And the file "/tmp/hclerk/air.mp3.7z.d/air.mp3.7z.002" should exist
+        
+    Scenario: Send parts via e-mail
+        When I run `piper email /tmp/hclerk/air.mp3.7z.d/air.mp3.7z.001`
+        Then the output should contain "E-Mail: sending file /tmp/hclerk/air.mp3.7z.d/air.mp3.7z.001\nE-Mail: ok\n"

@@ -1,6 +1,7 @@
 require 'thor'
 require 'pipeline/http_pipe'
 require 'pipeline/zip_seven_pipe'
+require 'pipeline/email_pipe'
 
 module Piper
   class CLI < Thor
@@ -23,6 +24,12 @@ module Piper
         x.config[:part_size_mb] = size
       end
       x.execute
+    end
+    
+    desc 'email PATH', 'Sends file represented by PATH via e-mail'
+    def email(path)
+      x = Pipeline::EmailPipe.new
+      x.source.add path
     end
   end
 end
