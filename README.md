@@ -95,4 +95,3 @@ line.execute
 
 1. http pipe - try to detect filename from uri
 2. http pipe - try to detect filename from http response headers
-3. line - implement line connecting pipes
