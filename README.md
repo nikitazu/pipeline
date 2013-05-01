@@ -58,6 +58,8 @@ E-mail example
     $ echo mypassword >~/.happy-clerk/email.password
     
 ```ruby
+require 'pipeline/email_pipe'
+
 x = Pipeline::EmailPipe.new
 x.source.add "/tmp/hclerk/air.mp3.7z.d/air.mp3.7z.001"
 x.source.add "/tmp/hclerk/air.mp3.7z.d/air.mp3.7z.002"
@@ -67,6 +69,11 @@ x.execute
 
 Line example
 ```ruby
+require 'pipeline/line'
+require 'pipeline/http_pipe'
+require 'pipeline/zip_seven_pipe'
+require 'pipeline/email_pipe'
+
 line = Pipeline::Line.new
 http = Pipeline::HttpPipe.new
 zip7 = Pipeline::ZipSevenPipe.new
