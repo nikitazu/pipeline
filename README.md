@@ -53,8 +53,16 @@ x.execute
 ```
 
 E-mail example
+
+    $ echo mylogin@gmail.com >~/.happy-clerk/email.login
+    $ echo mypassword >~/.happy-clerk/email.password
+    
 ```ruby
-# todo
+x = Pipeline::EmailPipe.new
+x.source.add "/tmp/hclerk/air.mp3.7z.d/air.mp3.7z.001"
+x.source.add "/tmp/hclerk/air.mp3.7z.d/air.mp3.7z.002"
+x.config[:to] = 'myfriend@xmail.com'
+x.execute
 ```
 
 ## Contributing
@@ -69,5 +77,4 @@ E-mail example
 
 1. http pipe - try to detect filename from uri
 2. http pipe - try to detect filename from http response headers
-3. email pipe - implement
-4. line - implement line connecting pipes
+3. line - implement line connecting pipes
