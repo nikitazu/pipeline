@@ -65,6 +65,23 @@ x.config[:to] = 'myfriend@xmail.com'
 x.execute
 ```
 
+Line example
+```ruby
+line = Pipeline::Line.new
+http = Pipeline::HttpPipe.new
+zip7 = Pipeline::ZipSevenPipe.new
+mail = Pipeline::EmailPipe.new
+
+line.add http
+line.add zip7
+line.add mail
+
+line.source.add "http://sourceforge.net/projects/cloverefiboot/files/readme.txt/download"
+http.config[:filename] = 'readme.txt'
+mail.config[:to] = 'nikitazu@gmail.com'
+line.execute
+```
+
 ## Contributing
 
 1. Fork it
