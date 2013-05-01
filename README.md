@@ -35,3 +35,10 @@ Or install it yourself as:
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Todo
+
+1. http pipe - try to detect filename from uri
+2. http pipe - try to detect filename from http response headers
+3. email pipe - implement
+4. line - implement line connecting pipes
