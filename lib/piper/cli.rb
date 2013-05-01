@@ -26,10 +26,12 @@ module Piper
       x.execute
     end
     
-    desc 'email PATH', 'Sends file represented by PATH via e-mail'
-    def email(path)
+    desc 'email PATH TO', 'Sends file represented by PATH via e-mail to TO'
+    def email(path, to)
       x = Pipeline::EmailPipe.new
       x.source.add path
+      x.config[:to] = to
+      x.execute
     end
   end
 end

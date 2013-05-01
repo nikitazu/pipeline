@@ -19,5 +19,7 @@ Feature: Pipe
         And the file "/tmp/hclerk/air.mp3.7z.d/air.mp3.7z.002" should exist
         
     Scenario: Send parts via e-mail
-        When I run `piper email /tmp/hclerk/air.mp3.7z.d/air.mp3.7z.001`
-        Then the output should contain "E-Mail: sending file /tmp/hclerk/air.mp3.7z.d/air.mp3.7z.001\nE-Mail: ok\n"
+        When I run `piper email /tmp/hclerk/readme.txt nikitazu@gmail.com`
+        Then the output should contain "E-Mail: sending file /tmp/hclerk/readme.txt of 1\nE-Mail: ok\n"
+    
+
