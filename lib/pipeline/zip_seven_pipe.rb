@@ -17,6 +17,12 @@ module Pipeline
       
       make_empty_dir @archive_to_dir
       
+      @zip_binary = @config[:zip_binary]
+      if not File.exists?(@zip_binary)
+        log "error: zip binary not found #{@zip_binary}"
+        return :fail
+      end
+      
       @part_size_mb = @config[:part_size_mb].to_i
       if @part_size_mb <= 0
         log "error: wrong part size #{@part_size_mb}"
