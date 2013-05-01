@@ -46,6 +46,8 @@ module Pipeline
       
       @parts = Dir["#{@archive_to_dir}/*"]
       log "volumes created #{@parts}"
+      
+      return :ok
     end
     
     def check_after_work

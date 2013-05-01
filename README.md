@@ -1,6 +1,8 @@
 # Pipeline
 
-TODO: Write a gem description
+A bunch of pipes to connect, they can
+load files from uris, archive and send
+them via email.
 
 ## Installation
 
@@ -18,7 +20,13 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+require 'pipeline/http_pipe'
+
+x = Pipeline::HttpPipe.new
+x.source.add "http://somesite/some-cool-picture.jpg"
+x.config[:filename] = "my-cool-picture.jpg"
+x.config[:path] = "/tmp/downloads"
+x.execute
 
 ## Contributing
 
