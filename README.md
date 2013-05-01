@@ -22,27 +22,29 @@ Or install it yourself as:
 
 Http example
 ```ruby
-    require 'pipeline/http_pipe'
+require 'pipeline/http_pipe'
     
-    x = Pipeline::HttpPipe.new
-    x.source.add "http://somesite/some-cool-picture.jpg"
-    x.config[:filename] = "my-cool-picture.jpg"
-    x.config[:path] = "/tmp/downloads"
-    x.execute
+x = Pipeline::HttpPipe.new
+x.source.add "http://somesite/some-cool-picture.jpg"
+x.config[:filename] = "my-cool-picture.jpg"
+x.config[:path] = "/tmp/downloads"
+x.execute
 ```
+
 7-zip example
 ```ruby
-    require 'pipeline/zip_seven_pipe'
+require 'pipeline/zip_seven_pipe'
 
-    x = Pipeline::ZipSevenPipe.new
-    x.source.add "/path/to/my/big/file.avi"
-    x.config[:part_size_mb] = "4"
-    x.config[:zip_binary] = "/usr/bin/7za"
-    x.execute
+x = Pipeline::ZipSevenPipe.new
+x.source.add "/path/to/my/big/file.avi"
+x.config[:part_size_mb] = "4"
+x.config[:zip_binary] = "/usr/bin/7za"
+x.execute
 ```
+
 E-mail example
 ```ruby
-    # todo
+# todo
 ```
 
 ## Contributing
