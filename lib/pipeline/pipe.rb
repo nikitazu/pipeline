@@ -1,7 +1,10 @@
+require 'observer'
 require 'pipeline/pipe_end'
 
 module Pipeline
   class Pipe
+    include Observable
+    
     attr_reader :name
     attr_reader :source
     attr_reader :target
@@ -13,6 +16,8 @@ module Pipeline
       @config = {}
       @source = PipeEnd.new source_max
       @target = PipeEnd.new target_max
+      
+      add_observer ConsoleLogger.new
     end
     
     def execute
@@ -62,7 +67,16 @@ module Pipeline
     end
     
     def log(message)
-      puts "#{name}: #{message}"
+      changed
+      notify_observers :pipe => @name, :message => message 
+      #notify_observers message
+      #puts "#{name}: #{message}"
+    end
+  end
+  
+  class ConsoleLogger
+    def update(data)
+      puts "#{data[:pipe]}: #{data[:message]}"
     end
   end
 end
