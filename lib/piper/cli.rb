@@ -44,7 +44,7 @@ module Piper
     desc 'line URI TO', 'Downloads file from URI archives it with 7-zip and sends via e-mail to TO'
     def line(uri, to)
       line = Pipeline::Line.new
-      line.add Pipeline::HttpPipe.new, :filename => filename 
+      line.add Pipeline::HttpPipe.new
       line.add Pipeline::ZipSevenPipe.new
       line.add Pipeline::EmailPipe.new, :to => to 
 
