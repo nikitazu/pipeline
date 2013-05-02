@@ -47,8 +47,8 @@ require 'pipeline/zip_seven_pipe'
 
 x = Pipeline::ZipSevenPipe.new
 x.source.add "/path/to/my/big/file.avi"
-x.config[:part_size_mb] = "4"
-x.config[:zip_binary] = "/usr/bin/7za"
+x.config[:part_size_mb] = "4" # optional
+x.config[:zip_binary] = "/usr/bin/7za" # optional
 x.execute
 ```
 
@@ -63,7 +63,7 @@ require 'pipeline/email_pipe'
 x = Pipeline::EmailPipe.new
 x.source.add "/tmp/hclerk/air.mp3.7z.d/air.mp3.7z.001"
 x.source.add "/tmp/hclerk/air.mp3.7z.d/air.mp3.7z.002"
-x.config[:to] = 'myfriend@xmail.com'
+x.config[:to] = 'myfriend@xmail.com' # required
 x.execute
 ```
 
@@ -93,7 +93,7 @@ line.execute
 
 ## Todo
 
-??
+1. http pipe - maybe write ' ' as '_' in filename?
 
 ## Will not do
 1. http pipe - try to detect filename from http response headers
