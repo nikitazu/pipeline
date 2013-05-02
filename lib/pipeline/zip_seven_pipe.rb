@@ -35,7 +35,7 @@ module Pipeline
     def work
       bin = @config[:zip_binary]
       options = "a -t7z -v#{@part_size_mb}m -y -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on -mhe=on"
-      output = %x[#{bin} #{options} #{@archive_to_path} #{@path} 2>&1]
+      output = %x[#{bin} #{options} '#{@archive_to_path}' '#{@path}' 2>&1]
       
       log "options: #{options}"
       

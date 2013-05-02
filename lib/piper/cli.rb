@@ -7,11 +7,17 @@ require 'pipeline/line'
 module Piper
   class CLI < Thor
     
-    desc 'http URI FILENAME', 'Downloads file from URI and saves it as FILENAME'
-    def http(uri, filename)
+    desc 'http URI', 'Downloads file from URI and saves it on disk'
+    method_option :filename, :aliases => '-f'
+    method_option :path, :aliases => '-p'
+    def http(uri)
       x = Pipeline::HttpPipe.new
       x.source.add uri
-      x.config[:filename] = filename
+      x.config[:filename] = options[:filename]
+      path = options[:path]
+      if not path.nil?
+        x.config[:path] = path
+      end
       x.execute
     end
     
@@ -35,14 +41,14 @@ module Piper
       x.execute
     end
     
-    desc 'line PATH FILENAME TO', 'Downloads file from URI archives it with 7-zip and sends via e-mail to TO'
-    def line(path, filename, to)
+    desc 'line URI TO', 'Downloads file from URI archives it with 7-zip and sends via e-mail to TO'
+    def line(uri, to)
       line = Pipeline::Line.new
-      line.add Pipeline::HttpPipe.new, { :filename => filename }
-      line.add Pipeline::ZipSevenPipe.new, { }
-      line.add Pipeline::EmailPipe.new, { :to => to }
+      line.add Pipeline::HttpPipe.new, :filename => filename 
+      line.add Pipeline::ZipSevenPipe.new
+      line.add Pipeline::EmailPipe.new, :to => to 
 
-      line.source.add path
+      line.source.add uri
       line.execute
     end
   end

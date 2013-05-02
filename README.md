@@ -36,8 +36,8 @@ require 'pipeline/http_pipe'
     
 x = Pipeline::HttpPipe.new
 x.source.add "http://somesite/some-cool-picture.jpg"
-x.config[:filename] = "my-cool-picture.jpg"
-x.config[:path] = "/tmp/downloads"
+x.config[:filename] = "my-cool-picture.jpg" # optional
+x.config[:path] = "/tmp/downloads" # optional
 x.execute
 ```
 
@@ -75,7 +75,7 @@ require 'pipeline/zip_seven_pipe'
 require 'pipeline/email_pipe'
 
 line = Pipeline::Line.new
-line.add Pipeline::HttpPipe.new, :filename => 'readme.txt'
+line.add Pipeline::HttpPipe.new
 line.add Pipeline::ZipSevenPipe.new
 line.add Pipeline::EmailPipe.new, :to => 'nikitazu@gmail.com'
 
@@ -93,5 +93,7 @@ line.execute
 
 ## Todo
 
-1. http pipe - try to detect filename from uri
-2. http pipe - try to detect filename from http response headers
+??
+
+## Will not do
+1. http pipe - try to detect filename from http response headers
