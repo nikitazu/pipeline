@@ -44,7 +44,7 @@ module Pipeline
         return :fail
       end
       
-      @parts = Dir["#{@archive_to_dir}/*"]
+      @parts = ZipSevenSort.sort(Dir["#{@archive_to_dir}/*"])
       log "volumes created #{@parts}"
       
       return :ok
@@ -79,5 +79,17 @@ module Pipeline
       end
     end
     
+  end
+  
+  module ZipSevenSort
+    def sort(names)
+      names.sort do |one, two|
+        one3 = one[-3, one.length].to_i
+        two3 = two[-3, two.length].to_i
+        one3 <=> two3
+      end
+    end
+    
+    module_function :sort
   end
 end
