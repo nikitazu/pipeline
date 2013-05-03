@@ -5,6 +5,11 @@ Feature: Pipe
         When I run `piper http http://tenshi.ru/anime-ost/Air/Air.Movie.OST/09%20-%20Dai%20san%20Shinpi%20Kou.mp3`
         Then the output should contain "HTTP: writing file /tmp/hclerk/09 - Dai san Shinpi Kou.mp3\nHTTP: ok\n"
         And the file "/tmp/hclerk/09 - Dai san Shinpi Kou.mp3" should exist
+
+    Scenario: Download file from tenshi.ru - ensure safe filenames
+        When I run `piper http http://tenshi.ru/anime-ost/Air/Air.Movie.OST/09%20-%20Dai%20san%20Shinpi%20Kou.mp3 -s y`
+        Then the output should contain "HTTP: writing file /tmp/hclerk/09_Dai_san_Shinpi_Kou.mp3\nHTTP: ok\n"
+        And the file "/tmp/hclerk/09_Dai_san_Shinpi_Kou.mp3" should exist
     
     Scenario: Download file from sourceforge.net
         When I run `piper http http://sourceforge.net/projects/cloverefiboot/files/readme.txt/download`

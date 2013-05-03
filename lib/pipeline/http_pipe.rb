@@ -7,6 +7,7 @@ module Pipeline
     def initialize
       super('HTTP', 1, 1)
       @config[:path] = '/tmp/hclerk/'
+      @config[:ensure_safe_filename] = 'yes'
     end
     
     def check_before_work
@@ -63,7 +64,16 @@ module Pipeline
         parsed_uri = URI.parse uri
         filename = File.basename parsed_uri.path
       end
-      @save_to = File.join path, URI.unescape(filename)
+      filename = URI.unescape(filename)
+      
+      if @config[:ensure_safe_filename] == 'yes' or @config[:ensure_safe_filename] == 'y'
+        filename.gsub! /'/, '_'
+        filename.gsub! /\s/, '_'
+        filename.gsub! /-/, '_'
+        filename.gsub! /_+/, '_'
+      end
+      
+      @save_to = File.join path, filename
     end
     
     def save_file(response)

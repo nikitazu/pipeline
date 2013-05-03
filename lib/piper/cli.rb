@@ -11,11 +11,13 @@ module Piper
     desc 'http URI', 'Downloads file from URI and saves it on disk'
     method_option :filename, :aliases => '-f'
     method_option :path, :aliases => '-p'
+    method_option :ensure_safe_filename, :aliases => '-s'
     def http(uri)
       x = Pipeline::HttpPipe.new
       x.add_observer Pipeline::ConsoleLogger.new
       x.source.add uri
       x.config[:filename] = options[:filename]
+      x.config[:ensure_safe_filename] = options[:ensure_safe_filename]
       path = options[:path]
       if not path.nil?
         x.config[:path] = path
