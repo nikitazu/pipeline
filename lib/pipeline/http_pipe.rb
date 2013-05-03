@@ -77,7 +77,7 @@ module Pipeline
     end
     
     def save_file(response)
-      File.open(@save_to, 'w') do |f|
+      File.open(@save_to, 'wb') do |f|
         log "writing file #{@save_to}"
         f.write response.body
       end
