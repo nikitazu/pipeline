@@ -4,8 +4,8 @@ require File.expand_path('../lib/pipeline/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Nikita B. Zuev"]
   gem.email         = ["nikitazu@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{A bunch of pipes to connect, and perform some jobs}
+  gem.summary       = %q{Loading files, archiving, emailing them...}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)
