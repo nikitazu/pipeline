@@ -1,4 +1,5 @@
 require 'thor'
+require 'pipeline/pipe'
 require 'pipeline/http_pipe'
 require 'pipeline/zip_seven_pipe'
 require 'pipeline/email_pipe'
@@ -12,6 +13,7 @@ module Piper
     method_option :path, :aliases => '-p'
     def http(uri)
       x = Pipeline::HttpPipe.new
+      x.add_observer Pipeline::ConsoleLogger.new
       x.source.add uri
       x.config[:filename] = options[:filename]
       path = options[:path]
@@ -25,6 +27,7 @@ module Piper
     method_option :part_size_mb, :aliases => "-p"
     def zip7(path)
       x = Pipeline::ZipSevenPipe.new
+      x.add_observer Pipeline::ConsoleLogger.new
       x.source.add path
       size = options[:part_size_mb]
       if not size.nil?
@@ -36,6 +39,7 @@ module Piper
     desc 'email PATH TO', 'Sends file represented by PATH via e-mail to TO'
     def email(path, to)
       x = Pipeline::EmailPipe.new
+      x.add_observer Pipeline::ConsoleLogger.new
       x.source.add path
       x.config[:to] = to
       x.execute
@@ -44,6 +48,7 @@ module Piper
     desc 'line URI TO', 'Downloads file from URI archives it with 7-zip and sends via e-mail to TO'
     def line(uri, to)
       line = Pipeline::Line.new
+      line.add_observer Pipeline::ConsoleLogger.new
       line.add Pipeline::HttpPipe.new
       line.add Pipeline::ZipSevenPipe.new
       line.add Pipeline::EmailPipe.new, :to => to 

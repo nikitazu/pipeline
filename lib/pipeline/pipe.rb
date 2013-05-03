@@ -17,7 +17,7 @@ module Pipeline
       @source = PipeEnd.new source_max
       @target = PipeEnd.new target_max
       
-      add_observer ConsoleLogger.new
+      #add_observer ConsoleLogger.new
     end
     
     def execute

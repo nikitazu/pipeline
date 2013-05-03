@@ -16,6 +16,8 @@ module Pipeline
       config.each do |key, value|
         pipe.config[key] = value
       end
+      
+      pipe.add_observer ItemsObserver.new(self)
     end
     
     def pipe(name)
@@ -59,5 +61,16 @@ module Pipeline
       return :ok
     end
     
+  end
+  
+  class ItemsObserver
+    def initialize(line)
+      @line = line
+    end
+    
+    def update(data)
+      @line.changed
+      @line.notify_observers data
+    end
   end
 end
