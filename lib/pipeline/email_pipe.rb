@@ -27,18 +27,16 @@ module Pipeline
         return :fail
       end
       
-      if not File.exists?(EMAIL_LOGINFILE)
-        log "error: login file not found #{EMAIL_LOGINFILE}"
-        return :fail
-      end
-
-      if not File.exists?(EMAIL_PASSFILE)
-        log "error: password file not found #{EMAIL_PASSFILE}"
+      @template.from = read_from_config_or_file(:login, EMAIL_LOGINFILE)
+      if @template.from.nil?
         return :fail
       end
       
-      @template.from = File.read(EMAIL_LOGINFILE).strip
-      @template.password = File.read(EMAIL_PASSFILE).strip
+      @template.password = read_from_config_or_file(:password, EMAIL_PASSFILE)
+      if @template.password.nil?
+        return :fail
+      end
+      
       @template.body = <<EOF
 Hello!
 
@@ -60,6 +58,21 @@ EOF
         gmail.send
       end
       return :ok
+    end
+    
+    def read_from_config_or_file(key, path)
+      value = @config[key]
+      
+      unless value.nil?
+        return value
+      end
+      
+      unless File.exists?(path)
+        log "error: config parameter [#{key}] is not set and login file not found #{EMAIL_LOGINFILE}"
+        return nil
+      end
+      
+      return File.read(path).strip
     end
 
   end

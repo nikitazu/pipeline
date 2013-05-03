@@ -68,6 +68,8 @@ x.add_observer Pipeline::ConsoleLogger.new # optional, or make your custom logge
 x.source.add "/tmp/hclerk/air.mp3.7z.d/air.mp3.7z.001"
 x.source.add "/tmp/hclerk/air.mp3.7z.d/air.mp3.7z.002"
 x.config[:to] = 'myfriend@xmail.com' # required
+x.config[:login] = 'mygmailsmtplogin@gmail.com' # if not set then is read from EMAIL_LOGINFILE
+x.config[:password] = 'mygmailsmtppassword' # if not set then is read from EMAIL_PASSFILE
 x.execute
 ```
 
