@@ -35,9 +35,11 @@ Http example
 require 'pipeline/http_pipe'
     
 x = Pipeline::HttpPipe.new
+x.add_observer Pipeline::ConsoleLogger.new # optional, or make your custom logger
 x.source.add "http://somesite/some-cool-picture.jpg"
 x.config[:filename] = "my-cool-picture.jpg" # optional
 x.config[:path] = "/tmp/downloads" # optional
+x.config[:ensure_safe_filenames] = 'no' # optional (by default 'yes')
 x.execute
 ```
 
@@ -46,6 +48,7 @@ x.execute
 require 'pipeline/zip_seven_pipe'
 
 x = Pipeline::ZipSevenPipe.new
+x.add_observer Pipeline::ConsoleLogger.new # optional, or make your custom logger
 x.source.add "/path/to/my/big/file.avi"
 x.config[:part_size_mb] = "4" # optional
 x.config[:zip_binary] = "/usr/bin/7za" # optional
@@ -61,6 +64,7 @@ E-mail example
 require 'pipeline/email_pipe'
 
 x = Pipeline::EmailPipe.new
+x.add_observer Pipeline::ConsoleLogger.new # optional, or make your custom logger
 x.source.add "/tmp/hclerk/air.mp3.7z.d/air.mp3.7z.001"
 x.source.add "/tmp/hclerk/air.mp3.7z.d/air.mp3.7z.002"
 x.config[:to] = 'myfriend@xmail.com' # required
@@ -75,6 +79,7 @@ require 'pipeline/zip_seven_pipe'
 require 'pipeline/email_pipe'
 
 line = Pipeline::Line.new
+line.add_observer Pipeline::ConsoleLogger.new # optional, or make your custom logger
 line.add Pipeline::HttpPipe.new
 line.add Pipeline::ZipSevenPipe.new
 line.add Pipeline::EmailPipe.new, :to => 'nikitazu@gmail.com'
