@@ -53,7 +53,11 @@ module Pipeline
       end
       
       parts = []
-      Dir.new(@archive_to_dir).each { |f| parts << f }
+      Dir.new(@archive_to_dir).each do |f| 
+        unless f == '.' or f == '..' 
+          parts << f 
+        end
+      end
       @parts = ZipSevenSort.sort(parts)
       
       log "volumes created #{@parts}"
@@ -68,11 +72,13 @@ module Pipeline
       end
       
       @parts.each do |part|
-        if not File.exists?(part)
-          log "error: archive part not found #{part}"
+        part_path = File.join @archive_to_dir, part
+        if not File.exists? part_path
+          log "error: archive part not found #{part_path}"
           return :fail
         end
-        @target.add part
+        log "target add #{part_path}"
+        @target.add part_path
       end
       
       return :ok
