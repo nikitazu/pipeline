@@ -1,4 +1,5 @@
 require 'pipeline/pipe'
+require 'fileutils'
 
 module Pipeline
   class ZipSevenPipe < Pipe
@@ -86,22 +87,8 @@ module Pipeline
     
     def make_empty_dir(path)
       log "make empty dir: #{path}"
-      destroy_fs_entry path
+      FileUtils.rm_rf path
       Dir.mkdir path
-    end
-
-    def destroy_fs_entry(path)
-      if File.exist?(path)
-        if File.directory?(path)
-          Dir["#{path}/*"].each do |f| 
-            log "deleting file #{f}"
-            File.delete f
-          end
-          Dir.rmdir path
-        else
-          File.delete path
-        end
-      end
     end
     
   end
