@@ -1,5 +1,6 @@
 require 'thor'
 require 'pipeline/pipe'
+require 'pipeline/uri_pipe'
 require 'pipeline/http_pipe'
 require 'pipeline/zip_seven_pipe'
 require 'pipeline/email_pipe'
@@ -7,6 +8,23 @@ require 'pipeline/line'
 
 module Piper
   class CLI < Thor
+    
+    desc "uri URI", 'Follows URI and prints its final uri, content length and filename'
+    method_option :filename, :aliases => '-f'
+    method_option :ensure_safe_filename, :aliases => '-s'
+    def uri(uri)
+      x = Pipeline::UriPipe.new
+      x.add_observer Pipeline::ConsoleLogger.new
+      x.source.add uri
+      x.config[:filename] = options[:filename]
+      
+      ensure_filename = options[:ensure_safe_filename]
+      unless ensure_filename.nil?
+        x.config[:ensure_safe_filename] = ensure_filename
+      end
+      
+      x.execute
+    end
     
     desc 'http URI', 'Downloads file from URI and saves it on disk'
     method_option :filename, :aliases => '-f'

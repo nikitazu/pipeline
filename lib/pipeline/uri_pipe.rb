@@ -35,9 +35,11 @@ module Pipeline
       case response
       when Net::HTTPSuccess then
         @content_length = response.content_length
-        log "content length #{@content_length}"
+        log "content length=#{@content_length}"
         @final_uri = uri
+        log "final uri=#{@final_uri}"
         @filename = parse_filename uri
+        log "filename=#{@filename}"
         return :ok
       when Net::HTTPRedirection then
         redir = response['location']
@@ -50,9 +52,13 @@ module Pipeline
     end
     
     def parse_filename(uri)
-      parsed_uri = URI.parse uri
-      filename = File.basename parsed_uri.path
-      filename = URI.unescape(filename)
+      filename = @filename
+      
+      if filename.nil?
+        parsed_uri = URI.parse uri
+        filename = File.basename parsed_uri.path
+        filename = URI.unescape(filename)
+      end
       
       if @ensure_safe_filename == 'yes'
         filename.gsub! /'/, '_'
