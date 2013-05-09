@@ -45,7 +45,7 @@ module Pipeline
         
         begin
           pipe.execute
-        rescue Exceptino => err
+        rescue Exception => err
           log "error in pipe #{pipe.name}: #{err.to_s}"
           return :fail
         end
