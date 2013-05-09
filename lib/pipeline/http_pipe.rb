@@ -5,14 +5,25 @@ require 'pipeline/pipe'
 module Pipeline
   class HttpPipe < Pipe
     def initialize
-      super('HTTP', 1, 1)
+      super('HTTP', 3, 1)
       @config[:path] = '/tmp/hclerk/'
-      @config[:ensure_safe_filename] = 'yes'
     end
     
     def check_before_work
-      @path = @config[:path]
-      @uri = @source.items[0]
+      @path           = @config[:path]
+      @uri            = @source.items[0]
+      @filename       = @source.items[1]
+      #@content_length = @source.items[2]
+      
+      if @uri.nil?
+        log "fail: source uri is not set"
+        return :fail
+      end
+      
+      if @filename.nil?
+        log "fail: source filename is not set"
+        return :fail
+      end
       
       if not File.exists?(@path)
         log "creating directory: #{@path}"
@@ -44,7 +55,7 @@ module Pipeline
       case response
       when Net::HTTPSuccess then
         log "content length #{response.content_length}"
-        parse_save_to uri, path
+        @save_to = File.join path, @filename
         save_file response
         return :ok
       when Net::HTTPRedirection then
@@ -56,24 +67,6 @@ module Pipeline
         log "error: #{response.value}"
         return :fail
       end
-    end
-    
-    def parse_save_to(uri, path)
-      filename = @config[:filename]
-      if filename.nil?
-        parsed_uri = URI.parse uri
-        filename = File.basename parsed_uri.path
-      end
-      filename = URI.unescape(filename)
-      
-      if @config[:ensure_safe_filename] == 'yes' or @config[:ensure_safe_filename] == 'y'
-        filename.gsub! /'/, '_'
-        filename.gsub! /\s/, '_'
-        filename.gsub! /-/, '_'
-        filename.gsub! /_+/, '_'
-      end
-      
-      @save_to = File.join path, filename
     end
     
     def save_file(response)

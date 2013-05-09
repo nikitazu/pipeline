@@ -26,20 +26,19 @@ module Piper
       x.execute
     end
     
-    desc 'http URI', 'Downloads file from URI and saves it on disk'
-    method_option :filename, :aliases => '-f'
+    desc 'http URI FILENAME', 'Downloads file from URI and saves it on disk as FILENAME'
     method_option :path, :aliases => '-p'
-    method_option :ensure_safe_filename, :aliases => '-s'
-    def http(uri)
+    def http(uri, filename)
       x = Pipeline::HttpPipe.new
       x.add_observer Pipeline::ConsoleLogger.new
       x.source.add uri
-      x.config[:filename] = options[:filename]
-      x.config[:ensure_safe_filename] = options[:ensure_safe_filename]
+      x.source.add filename
+      
       path = options[:path]
       if not path.nil?
         x.config[:path] = path
       end
+      
       x.execute
     end
     
@@ -69,6 +68,8 @@ module Piper
     def line(uri, to)
       line = Pipeline::Line.new
       line.add_observer Pipeline::ConsoleLogger.new
+      
+      line.add Pipeline::UriPipe.new
       line.add Pipeline::HttpPipe.new
       line.add Pipeline::ZipSevenPipe.new
       line.add Pipeline::EmailPipe.new, :to => to 

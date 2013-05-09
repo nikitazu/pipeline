@@ -20,17 +20,12 @@ Feature: Pipe
         Then the output should contain "URI: filename=09 - Dai san Shinpi Kou.mp3\n"
             
     Scenario: Download file from tenshi.ru
-        When I run `piper http http://tenshi.ru/anime-ost/Air/Air.Movie.OST/09%20-%20Dai%20san%20Shinpi%20Kou.mp3`
-        Then the output should contain "HTTP: writing file /tmp/hclerk/09 - Dai san Shinpi Kou.mp3\nHTTP: ok\n"
-        And the file "/tmp/hclerk/09 - Dai san Shinpi Kou.mp3" should exist
-
-    Scenario: Download file from tenshi.ru - ensure safe filenames
-        When I run `piper http http://tenshi.ru/anime-ost/Air/Air.Movie.OST/09%20-%20Dai%20san%20Shinpi%20Kou.mp3 -s y`
-        Then the output should contain "HTTP: writing file /tmp/hclerk/09_Dai_san_Shinpi_Kou.mp3\nHTTP: ok\n"
-        And the file "/tmp/hclerk/09_Dai_san_Shinpi_Kou.mp3" should exist
+        When I run `piper http http://tenshi.ru/anime-ost/Air/Air.Movie.OST/09%20-%20Dai%20san%20Shinpi%20Kou.mp3 tenshi.mp3`
+        Then the output should contain "HTTP: writing file /tmp/hclerk/tenshi.mp3\nHTTP: ok\n"
+        And the file "/tmp/hclerk/tenshi.mp3" should exist
     
     Scenario: Download file from sourceforge.net
-        When I run `piper http http://sourceforge.net/projects/cloverefiboot/files/readme.txt/download`
+        When I run `piper http http://sourceforge.net/projects/cloverefiboot/files/readme.txt/download readme.txt`
         Then the output should contain "HTTP: writing file /tmp/hclerk/readme.txt\nHTTP: ok\n"
         And the file "/tmp/hclerk/readme.txt" should exist
     
