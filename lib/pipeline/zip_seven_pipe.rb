@@ -52,19 +52,26 @@ module Pipeline
         return :fail
       end
       
-      @parts = ZipSevenSort.sort(Dir["#{@archive_to_dir}/*"])
+      parts = []
+      Dir.new(@archive_to_dir).each { |f| parts << f }
+      @parts = ZipSevenSort.sort(parts)
+      
       log "volumes created #{@parts}"
       
       return :ok
     end
     
     def check_after_work
+      if @parts.length == 0
+        log "error: nothing done"
+        return :fail
+      end
+      
       @parts.each do |part|
         if not File.exists?(part)
           log "error: archive part not found #{part}"
           return :fail
         end
-        
         @target.add part
       end
       
