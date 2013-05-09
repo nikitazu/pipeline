@@ -42,8 +42,14 @@ module Pipeline
         else
           log "next pipe is #{pipe.name}"
         end
+        
+        begin
+          pipe.execute
+        rescue Exceptino => err
+          log "error in pipe #{pipe.name}: #{err.to_s}"
+          return :fail
+        end
           
-        pipe.execute
         if pipe.result == :fail
           log "#{pipe.name} failed, breaking line"
           return :fail
