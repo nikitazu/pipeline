@@ -30,16 +30,32 @@ Or install it yourself as:
 
 ## Usage
 
+Uri example
+```ruby
+require 'pipeline/uri_pipe'
+
+x = Pipeline::UriPipe.new
+x.add_observer Pipeline::ConsoleLogger.new # optional, or make your custom logger
+x.source.add "http://somesite/some-cool-picture.jpg"
+x.config[:filename] = "my-cool-picture.jpg" # optional
+x.config[:ensure_safe_filenames] = 'no' # optional (by default 'yes')
+x.execute
+puts x.target.items[0] # => "http://somesite/some-cool-picture.jpg" or redirected uri
+puts x.target.items[1] # => my-cool-picture.jpg or some-cool-picture.jpg
+puts x.target.items[3] # => content-length of my-cool-picture.jpg
+```
+
 Http example
 ```ruby
 require 'pipeline/http_pipe'
     
 x = Pipeline::HttpPipe.new
 x.add_observer Pipeline::ConsoleLogger.new # optional, or make your custom logger
+
 x.source.add "http://somesite/some-cool-picture.jpg"
-x.config[:filename] = "my-cool-picture.jpg" # optional
+x.source.add "my-cool-picture.jpg"
+
 x.config[:path] = "/tmp/downloads" # optional
-x.config[:ensure_safe_filenames] = 'no' # optional (by default 'yes')
 x.execute
 ```
 
@@ -76,12 +92,14 @@ x.execute
 Line example
 ```ruby
 require 'pipeline/line'
+require 'pipeline/uri_pipe'
 require 'pipeline/http_pipe'
 require 'pipeline/zip_seven_pipe'
 require 'pipeline/email_pipe'
 
 line = Pipeline::Line.new
 line.add_observer Pipeline::ConsoleLogger.new # optional, or make your custom logger
+line.add Pipeline::UriPipe.new
 line.add Pipeline::HttpPipe.new
 line.add Pipeline::ZipSevenPipe.new
 line.add Pipeline::EmailPipe.new, :to => 'nikitazu@gmail.com'
@@ -98,9 +116,4 @@ line.execute
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-## Todo
 
-1. http pipe - maybe write ' ' as '_' in filename?
-
-## Will not do
-1. http pipe - try to detect filename from http response headers
