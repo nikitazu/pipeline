@@ -15,10 +15,15 @@ module Pipeline
       @archive_to_dir = "#{@path}.7z.d"
       @archive_to_path = File.join(@archive_to_dir, archive_to_name)
       
+      unless File.exists? @path
+        log "error: source file not found #{@path}"
+        return :fail
+      end
+      
       make_empty_dir @archive_to_dir
       
       @zip_binary = @config[:zip_binary]
-      if not File.exists?(@zip_binary)
+      unless File.exists? @zip_binary
         log "error: zip binary not found #{@zip_binary}"
         return :fail
       end
@@ -35,9 +40,12 @@ module Pipeline
     def work
       bin = @config[:zip_binary]
       options = "a -t7z -v#{@part_size_mb}m -y -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on -mhe=on"
-      output = %x[#{bin} #{options} '#{@archive_to_path}' '#{@path}' 2>&1]
+      run = "#{bin} #{options} '#{@archive_to_path}' '#{@path}' 2>&1"
       
       log "options: #{options}"
+      log "run: #{run}"
+      
+      output = %x[#{run}]
       
       if not $?.success?
         log "error: #{output}"
@@ -64,6 +72,7 @@ module Pipeline
     end
     
     def make_empty_dir(path)
+      log "make empty dir: #{path}"
       destroy_fs_entry path
       Dir.mkdir path
     end
@@ -71,7 +80,10 @@ module Pipeline
     def destroy_fs_entry(path)
       if File.exist?(path)
         if File.directory?(path)
-          Dir["#{path}/*"].each { |f| File.delete f }
+          Dir["#{path}/*"].each do |f| 
+            log "deleting file #{f}"
+            File.delete f
+          end
           Dir.rmdir path
         else
           File.delete path

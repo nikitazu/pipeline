@@ -30,11 +30,11 @@ Feature: Pipe
         And the file "/tmp/hclerk/readme.txt" should exist
     
     Scenario: Create 7z archive
-        When I run `piper zip7 '/tmp/hclerk/09 - Dai san Shinpi Kou.mp3' -p1`
+        When I run `piper zip7 '/tmp/hclerk/tenshi.mp3' -p1`
         Then the output should contain "7Z: volumes created"
-        And the directory "/tmp/hclerk/09 - Dai san Shinpi Kou.mp3.7z.d" should exist
-        And the file "/tmp/hclerk/09 - Dai san Shinpi Kou.mp3.7z.d/09 - Dai san Shinpi Kou.mp3.7z.001" should exist
-        And the file "/tmp/hclerk/09 - Dai san Shinpi Kou.mp3.7z.d/09 - Dai san Shinpi Kou.mp3.7z.002" should exist
+        And the directory "/tmp/hclerk/tenshi.mp3.7z.d" should exist
+        And the file "/tmp/hclerk/tenshi.mp3.7z.d/tenshi.mp3.7z.001" should exist
+        And the file "/tmp/hclerk/tenshi.mp3.7z.d/tenshi.mp3.7z.002" should exist
         
     Scenario: Send parts via e-mail
         When I run `piper email /tmp/hclerk/readme.txt nikitazu@gmail.com`
